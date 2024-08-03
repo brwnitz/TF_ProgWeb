@@ -1,0 +1,81 @@
+.loginModal{
+    display: flex;
+    justify-content: center;
+    padding: 70px;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.loginModal h1{
+    font-style: italic;
+    font-size: 39px;
+    margin: 0;
+}
+
+.loginModal input{
+    background-color: transparent;
+    color: gray;
+    border: 1px solid #C2C5E1;
+    height: 64px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 0 !important;
+    font-size: 20px;
+    width: 100%;
+}
+
+.loginModal input::placeholder{
+    color: var(--subtext);
+}
+
+.loginModal input:focus{
+    border: 1px solid var(--main-pink) !important;
+}
+
+.loginModal a{
+    color: var(--main-pink);
+    font-size: 20px;
+    text-decoration: none;
+    font-style: italic;
+}
+
+.loginModal a:hover{
+    color: var(--main-pink);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.loginModal button{
+    border-radius: 0;
+    width: 100%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    height: 64px;
+    font-size: 20px;
+    background-color: var(--main-pink);
+}
+
+.loginModal p{
+    font-size: 20px;
+    color: var(--subtext) !important;
+}
+
+.loginModal form{
+    width: 100%;
+    gap: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+body{
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

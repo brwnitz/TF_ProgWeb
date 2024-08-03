@@ -1,0 +1,107 @@
+.registerModal{
+    display: flex;
+    justify-content: center;
+    padding: 70px;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.registerModal h1{
+    font-style: italic;
+    font-size: 39px;
+    margin: 0;
+}
+
+.registerModal input{
+    background-color: transparent;
+    color: gray;
+    border: 1px solid #C2C5E1;
+    height: 64px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 0 !important;
+    font-size: 20px;
+    width: 100%;
+}
+
+.checkboxForm{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+}
+
+.checkboxForm input{
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.checkboxForm input:hover{
+    border: var(--main-pink);
+}
+
+.checkboxForm label{
+    font-size: 20px;
+    color: var(--subtext);
+    cursor: pointer;
+}
+
+.registerModal input::placeholder{
+    color: var(--subtext);
+}
+
+.registerModal input:focus{
+    border: 1px solid var(--main-pink) !important;
+}
+
+.registerModal a{
+    color: var(--main-pink);
+    font-size: 20px;
+    text-decoration: none;
+    font-style: italic;
+}
+
+.registerModal a:hover{
+    color: var(--main-pink);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.registerModal button{
+    border-radius: 0;
+    width: 100%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    height: 64px;
+    font-size: 20px;
+    background-color: var(--main-pink);
+}
+
+.registerModal p{
+    font-size: 20px;
+    color: var(--subtext) !important;
+}
+
+.registerModal form{
+    width: 100%;
+    gap: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+body{
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
