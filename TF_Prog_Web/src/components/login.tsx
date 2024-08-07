@@ -7,8 +7,15 @@ import "../styles/login.css"
 const Login = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    function handleLogged(navigator: ReturnType<typeof useNavigate>) {
-        navigator('/dashboard');
+    function handleLogged(navigator: ReturnType<typeof useNavigate>, userId: string) {
+      const params = new URLSearchParams({ user: userId });
+      if(userId == "1"){
+        console.log(params.toString());
+        navigator(`/admin?${params.toString()}`);
+      }
+      else{
+        navigator(`/dashboard?${params.toString()}`);
+      }
     }
     function navigateRegister(navigator: ReturnType<typeof useNavigate>) {
         navigator('/register');
@@ -21,8 +28,14 @@ const Login = () => {
     
         const loginSuccessful = await fakeLoginApi(target[0].value, target[1].value);
         if (loginSuccessful) {
+          if(target[0].value == "admin"){
           Cookies.set('loggedUser', 'admin', { expires: 1 });
-          handleLogged(navigate);
+          handleLogged(navigate, "1");
+          }
+          else{
+            Cookies.set('loggedUser', 'user', { expires: 1 });
+            handleLogged(navigate, "2");
+          }
         } else {
           alert('Login failed');
         }
@@ -34,14 +47,14 @@ const Login = () => {
         if (!username || !password) return Promise.resolve(false);
         return new Promise((resolve) => {
           setTimeout(() => {
-            resolve(username === 'admin' && password === 'admin');
+            resolve(username === 'admin@admin.com' && password === 'admin');
           }, 1000);
         });
       };
     useEffect(()=>{
         if(Cookies.get('loggedUser') != undefined){ 
             console.log(Cookies.get('loggedUser'));
-            handleLogged(navigate);
+            handleLogged(navigate,"1");
         }
     }, [navigate])
   return (
@@ -52,7 +65,7 @@ const Login = () => {
             <h1>Login</h1>
             <p>Por favor faça login usando os detalhes da conta abaixo</p>
             <form onSubmit={handleLogin}>
-                <input type="text" placeholder="Endereço de e-mail" />
+                <input type="email" placeholder="Endereço de e-mail" />
                 <input type="password" placeholder="Senha" />
                 <button type="submit">Entrar</button>
             </form>

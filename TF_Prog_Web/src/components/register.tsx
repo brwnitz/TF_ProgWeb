@@ -3,12 +3,7 @@ import Cookies from 'js-cookie';
 import { useEffect, useState } from "react";
 import Loading from "../modules/loading";
 import "../styles/register.css"
-
-// interface UserProps{
-//     username: string;
-//     password: string;
-//     email: string;
-// }
+import User from "../models/user";
 
 const Register = () => {
     const [loading, setLoading] = useState(false);
@@ -20,14 +15,16 @@ const Register = () => {
     const handleRegister = async (e: Event) => {
         e.preventDefault();
         setLoading(true);
-        // const target: any = e.target;
+        const target: any = e.target;
     
-        // const user: UserProps = {
-        //     username: target[0].value,
-        //     password: target[1].value,
-        //     email: target[2].value
-        // }
-        const registerSuccessful = await fakeRegisterApi();
+        const user: User = {
+            username: target[0].value,
+            password: target[1].value,
+            email: target[2].value,
+            adm: false
+        }
+
+        const registerSuccessful = await fakeRegisterApi(user);
         if (registerSuccessful) {
           handleRegistered(navigate);
         } else {
@@ -37,10 +34,10 @@ const Register = () => {
       };
     
     
-      const fakeRegisterApi = (): Promise<boolean> => {
+      const fakeRegisterApi = (user: User): Promise<boolean> => {
         return new Promise((resolve) => {
           setTimeout(() => {
-            resolve(true)
+            resolve(user.username === 'admin' && user.password === 'admin');
           }, 1000);
         });
       };
@@ -59,7 +56,7 @@ const Register = () => {
             <p>Por favor, preencha os dados abaixo para efetuar cadastro.</p>
             <form onSubmit={handleRegister}>
                 <input type="text" placeholder="Usuário" />
-                <input type="text" placeholder="Endereço de e-mail" />
+                <input type="email" placeholder="Endereço de e-mail" />
                 <input type="password" placeholder="Senha" />
                 <input type="password" placeholder="Confirmar senha" />
                 <div class="checkboxForm">
