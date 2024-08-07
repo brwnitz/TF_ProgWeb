@@ -16,7 +16,7 @@ const Register = () => {
     function handleRegistered(navigator: ReturnType<typeof useNavigate>) {
         navigator('/login');
     }
-    
+
     const handleRegister = async (e: Event) => {
         e.preventDefault();
         setLoading(true);
@@ -68,7 +68,7 @@ const Register = () => {
                 </div>
                 <button type="submit">Entrar</button>
             </form>
-            <p>Já possui uma conta? <a>Faça login</a></p>
+            <p>Já possui uma conta? <a onClick={() => handleRegistered(navigate)}>Faça login</a></p>
         </div>
     </body>
     </>
