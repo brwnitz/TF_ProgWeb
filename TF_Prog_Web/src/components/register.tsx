@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Loading from "../modules/loading";
 import "../styles/register.css"
 import User from "../models/user";
+import axios from "axios";
 
 const Register = () => {
     const [loading, setLoading] = useState(false);
@@ -18,32 +19,30 @@ const Register = () => {
         const target: any = e.target;
     
         const user: User = {
-            username: target[0].value,
-            password: target[1].value,
-            email: target[2].value,
+            name: target[0].value,
+            password: target[2].value,
+            email: target[1].value,
             adm: false
         }
 
-        const registerSuccessful = await fakeRegisterApi(user);
-        if (registerSuccessful) {
-          handleRegistered(navigate);
-        } else {
-          alert('Login failed');
+        try{
+            const response = await axios.post('http://localhost:3001/registerUser', user);
+            if(response.data.type == "S"){
+                alert("Usuário cadastrado com sucesso!");
+                handleRegistered(navigate);
+            }else{
+                alert("Error: " + response.data.message);
+            }
+        } catch (error){
+            alert("Error: " + error);
+            console.error(error);
         }
-        setLoading(false);
-      };
-    
-    
-      const fakeRegisterApi = (user: User): Promise<boolean> => {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            resolve(user.username === 'admin' && user.password === 'admin');
-          }, 1000);
-        });
+        finally{
+            setLoading(false);
+        }
       };
     useEffect(()=>{
         if(Cookies.get('loggedUser') != undefined){ 
-            console.log(Cookies.get('loggedUser'));
             handleRegistered(navigate);
         }
     }, [navigate])

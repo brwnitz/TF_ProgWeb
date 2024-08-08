@@ -1,11 +1,12 @@
 interface User{
-    username: string;
-    password: string;
-    email: string;
+    id?: number;
+    name: string;
     tell?: number;
     surname?: string;
-    address?: string;
+    email: string;
+    adress?: string;
     adm?: boolean;
+    password: string;
 }
 
 export default User;

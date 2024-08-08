@@ -80,11 +80,14 @@ const UserController = {
                             email:userDB.data[0].email,
                             adm: userDB.data[0].adm
                         }
+                        console.log(PRIVATE_KEY_JWT);
                         userDB.data[0].id = "";
                         console.log(userDB.data);
                         var token = jwt.sign(userToken, PRIVATE_KEY_JWT, {
                             expiresIn: '30m'
                         });
+
+                        console.log(token);
 
 
 

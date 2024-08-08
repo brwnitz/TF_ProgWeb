@@ -3,18 +3,17 @@ import Cookies from 'js-cookie';
 import { useEffect, useState } from "react";
 import Loading from "../modules/loading";
 import "../styles/login.css"
+import axios from "axios";
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    function handleLogged(navigator: ReturnType<typeof useNavigate>, userId: string) {
-      const params = new URLSearchParams({ user: userId });
-      if(userId == "1"){
-        console.log(params.toString());
-        navigator(`/admin?${params.toString()}`);
+    function handleLogged(navigator: ReturnType<typeof useNavigate>, userAdm?: string) {
+      if(userAdm == "1"){
+        navigator(`/admin`);
       }
       else{
-        navigator(`/dashboard?${params.toString()}`);
+        navigator(`/dashboard`);
       }
     }
     function navigateRegister(navigator: ReturnType<typeof useNavigate>) {
@@ -25,36 +24,32 @@ const Login = () => {
         e.preventDefault();
         setLoading(true);
         const target: any = e.target;
-    
-        const loginSuccessful = await fakeLoginApi(target[0].value, target[1].value);
-        if (loginSuccessful) {
-          if(target[0].value == "admin"){
-          Cookies.set('loggedUser', 'admin', { expires: 1 });
-          handleLogged(navigate, "1");
+
+        const email = target[0].value;
+        const password = target[1].value;
+        try{
+          const response = await axios.post('http://localhost:3001/login', {email, password});
+          if(response.data.type == "S"){
+            const {token, data} = response.data;
+            const expirationDate = new Date(new Date().getTime() + 30 * 60 * 1000);
+            Cookies.set('loggedUser', JSON.stringify(data[0]), {expires: expirationDate});
+            Cookies.set('token', token, {expires: expirationDate});
+            handleLogged(navigate, data[0].adm ? "1" : "0");
+          }else{
+            alert("Error: " + response.data.message);
           }
-          else{
-            Cookies.set('loggedUser', 'user', { expires: 1 });
-            handleLogged(navigate, "2");
-          }
-        } else {
-          alert('Login failed');
+        } catch (error){
+          alert("Error: " + error);
+          console.error(error);
+        } finally{
+          setLoading(false);
         }
-        setLoading(false);
       };
     
-    
-      const fakeLoginApi = (username: string, password: string): Promise<boolean> => {
-        if (!username || !password) return Promise.resolve(false);
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            resolve(username === 'admin@admin.com' && password === 'admin');
-          }, 1000);
-        });
-      };
     useEffect(()=>{
         if(Cookies.get('loggedUser') != undefined){ 
             console.log(Cookies.get('loggedUser'));
-            handleLogged(navigate,"1");
+            handleLogged(navigate);
         }
     }, [navigate])
   return (

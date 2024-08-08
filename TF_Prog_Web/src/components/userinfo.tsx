@@ -5,6 +5,7 @@ import "../styles/userinfo.css";
 import Cookies from 'js-cookie';
 import Loading from "../modules/loading";
 import User from "../models/user";
+import axios from "axios";
 
 
 const Userinfo = () => {
@@ -16,12 +17,10 @@ const Userinfo = () => {
     const [city, setCity] = useState<string>();
     const [state, setState] = useState<string>();
     const [cep, setCep] = useState<string>();
-    function handleLogged(navigator: ReturnType<typeof useNavigate>) {
-        navigator('/dashboard');
-    }
     
     function handleLogout(navigate: ReturnType<typeof useNavigate>) {
         Cookies.remove('loggedUser');
+        Cookies.remove('token');
         navigate('/login');
     }
 
@@ -42,49 +41,73 @@ const Userinfo = () => {
         const concatenateAddress = target[6].value + ';' + target[7].value + ';' + target[8].value + ';' + target[9].value + ';' + target[10].value;
 
         const user: User = {
-            username: target[0].value,
+            name: target[0].value,
             surname: target[1].value,
             email: target[2].value,
             tell: target[3].value,
             password: target[4].value,
-            address: concatenateAddress,
+            adress: concatenateAddress,
+            adm: false
         }
-    
-        const changeSuccessful = await fakeInfoChangeApi(user);
-        if (changeSuccessful) {
-            alert('Informações alteradas com sucesso');
-        } else {
-            alert('Erro ao alterar as informações ');
-        }
-        setLoading(false);
-      };
-    
-    
-      const fakeInfoChangeApi = (user: User): Promise<boolean> => {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            if(user.username == "adm"){
-                resolve(true);
+
+        try{
+            const token = Cookies.get('token');
+            const response = await axios.put("http://localhost:3001/updateUser", user, {headers:{'x-access-token': token}});
+
+            if(response.data.type == "S"){
+                alert("Usuário atualizado com sucesso!");
             }
-            resolve(false);
-          }, 1000);
-        });
+            else{
+                alert("Error: " + response.data.message);
+            }
+        }
+        catch(error){
+            alert("Error: " + error);
+            console.error(error);
+        }
+        finally{
+            setLoading(false);
+        }
+    
       };
+
+
+      const handleDelete = async (e: Event) => {
+        e.preventDefault();
+        setLoading(true);
+    
+        try {
+            const token = Cookies.get('token');
+            console.log(token);
+            const response = await axios.delete("http://localhost:3001/deleteUser", { headers: { 'x-access-token': token } });
+    
+            if (response.data.type == "S") {
+                alert("Usuário deletado com sucesso!");
+                handleLogout(navigate);
+            } else {
+                alert("Error: " + response.data.message);
+            }
+        } catch (error) {
+            alert("Error: " + error);
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
     useEffect(()=>{
-        if(Cookies.get('loggedUser') != undefined){ 
-            console.log(Cookies.get('loggedUser'));
-            handleLogged(navigate);
+        if(Cookies.get('token') == undefined || Cookies.get('loggedUser') == undefined){ 
+            handleLogout(navigate);
         }
-        const searchParams = new URLSearchParams(window.location.search);
-        const userId = searchParams.get('user');
-        if(userId == '1'){
-            setUser({
-                username: 'admin',
-                password: 'admin',
-                email: "admin@admin.com"
-            })
+        else{
+            const userLoad: User = JSON.parse(Cookies.get('loggedUser')!!);
+            console.log(userLoad);
+            setUser(userLoad);
+            if(userLoad.adress != undefined && userLoad.adress != ""){
+                deconstructAddress(userLoad.adress);
+            }
         }
-        deconstructAddress(user?.address!!);
     }, [navigate])
     
     return( 
@@ -98,7 +121,7 @@ const Userinfo = () => {
                     <div class="modalDivision">
                         <p>Informações de contato</p>
                         <div class="modalRow">
-                            <input type="text" placeholder="Primeiro nome" value={user?.username} required/>
+                            <input type="text" placeholder="Primeiro nome" value={user?.name} required/>
                             <input type="text" placeholder="Sobrenome" value={user?.surname} required/>
                         </div>
                         <div class="modalRow">
@@ -128,7 +151,7 @@ const Userinfo = () => {
                     </div>
                     <div class="modalRow">
                         <button type="submit">Salvar</button>
-                        <button type="button">Deletar</button>
+                        <button type="button" onClick={handleDelete}>Deletar</button>
                     </div>
                 </form>
             </div>
