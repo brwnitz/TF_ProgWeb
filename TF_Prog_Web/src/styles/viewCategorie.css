@@ -1,12 +1,12 @@
-.userModal{
-    display: flex;
+.userModalCategorie{
+    display: grid;
     justify-content: center;
     padding: 70px;
     margin: 50px;
+    grid-template-columns: 1fr;
     align-items: center;
     flex-direction: column;
-    background-color: #F8F8FD;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: transparent;
 }
 
 .userModal h1{
@@ -89,6 +89,16 @@
     flex-direction: column;
 }
 
+#buttonCadProduct{
+    background-color: var(--subtext);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
 body{
     margin: 0;
     width: 100%;
@@ -98,67 +108,55 @@ body{
     align-items: center;
 }
 
-#buttonLogout{
-    background-color: var(--subtext);
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-#buttonSeeProduct{
-    background-color: var(--subtext);
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.navButtons{
+.categorieItem{
     display: flex;
-    width: min-content;
-    height: min-content;
+    gap: 100px;
     justify-content: space-between;
-    flex-direction: column;
     align-items: center;
-    position: absolute;
+    height: 170px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 0px 20px;
+}
+
+.itemColumn{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+}
+
+.itemRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     gap: 20px;
-    top: 10px;
-    right: 10px;
 }
 
-#addImage{
-    padding: 50px 0px 50px 0px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    height: 200px;
-    background-color: transparent !important;
-    border: 2px solid var(--main-pink);
-    color: black;
-}
 
-img{
-    width: 240px;
-    height: 205px;
-}
-
-#addImage p{
-    margin: 0;
-    padding: 10px 18px;
-    font-size: 28px;
+.categorieItem p{
+    font-size: 24px;
     font-weight: bold;
-    color: var(--main-pink) !important;
-    background-color: var(--border);
-    border-radius: 100%;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    margin: 0;
 }
 
-.imageRow{
-    gap: 13px;
+.tinySpan{
+    font-size: 14px;
+    text-align: center !important;
+    color: var(--subtext);
 }
+
+.tinyP{
+    font-size: 24px;
+    text-align: center !important;
+}
+
+.categorieItem span{
+    text-align: start;
+}
+
+.itemColumn:has(.tinyP){
+    justify-content: center;
+    align-items: center;
+}
+
