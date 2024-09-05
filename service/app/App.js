@@ -4,8 +4,10 @@ const bodyParser = require('body-parser')
 const express = require("express");
 const cors = require('cors');
 
+
 const app = express();
 app.use(cors());
+app.use("/public/uploads", express.static("public/uploads"));
 
 
 app.use(express.json())

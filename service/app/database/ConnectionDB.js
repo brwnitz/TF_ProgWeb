@@ -86,7 +86,7 @@ const connectionDB = {
             price DOUBLE NOT NULL,
             moreInfors TEXT,
             stock INT NOT NULL,
-            category INT ,
+            category INT NOT NULL,
             FOREIGN KEY (category) REFERENCES category(id)
           )
         `;
@@ -106,7 +106,7 @@ const connectionDB = {
             id INT AUTO_INCREMENT PRIMARY KEY,
             id_sale INT NOT NULL,
             id_kit INT NULL,
-            id_packedLunch INT NULL,
+            id_packedLunch INT NOT NULL,
             observations TEXT NULL,
             qtd INT NOT NULL,
             FOREIGN KEY (id_sale) REFERENCES sales(id),
@@ -161,10 +161,7 @@ const connectionDB = {
         const createImagesProductTableQuery = `
           CREATE TABLE IF NOT EXISTS imagesProducts (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            content BLOB NOT NULL,
-            type VARCHAR(10) NOT NULL,
-            size INT,
+            link VARCHAR(255) NOT NULL,
             id_packedLunch INT NOT NULL,
             FOREIGN KEY (id_packedLunch) REFERENCES packedLunch(id)
           )
