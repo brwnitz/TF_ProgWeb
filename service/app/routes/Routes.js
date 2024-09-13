@@ -42,7 +42,8 @@ router.put('/updateUser', ValidTokenController.validToken, UserController.update
 router.delete('/deleteUser', ValidTokenController.validToken, UserController.deleteUser);
 
 router.post('/registerCategory', ValidTokenController.validToken, CategoryController.insertCategoryControll);
-router.get('/selectCategory', CategoryController.selectAllCategory); 
+router.get('/selectCategory', CategoryController.selectAllCategory);
+router.get('/selectCategoryById', CategoryController.selectOneCategory); 
 router.put('/updateCategory', ValidTokenController.validToken, CategoryController.updateCategory);
 router.delete('/deleteCategory', ValidTokenController.validToken, CategoryController.deleteCategory);
 
@@ -51,6 +52,7 @@ router.delete('/deleteImagesProduct', ValidTokenController.validToken, ProductCo
 
 router.post('/registerProduct', ValidTokenController.validToken, ProductController.insertProduct);
 router.get('/selectAllProduct', ProductController.selectAllProducts);
+router.get('/selectProductById', ProductController.selectOneProduct);
 router.get('/selectProductByCategory', ProductController.selectAllProductsByCategory); 
 router.put('/updateProduct', ValidTokenController.validToken, ProductController.updateProduct);
 router.delete('/deleteProduct', ValidTokenController.validToken, ProductController.deleteProduct);

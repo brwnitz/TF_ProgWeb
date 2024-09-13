@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     padding: 70px;
-    margin: 50px;
+    margin: 250px;
     align-items: center;
     flex-direction: column;
     background-color: #F8F8FD;
@@ -108,30 +108,33 @@ body{
     cursor: pointer;
 }
 
-#buttonSeeProduct{
-    background-color: var(--subtext);
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 20px;
-    cursor: pointer;
-}
 
 .navButtons{
     display: flex;
     width: min-content;
     height: min-content;
-    justify-content: space-between;
+    justify-content: start;
     flex-direction: column;
-    align-items: center;
-    position: absolute;
+    background: white;
+    position: fixed;
+    height: 100%;
     gap: 20px;
-    top: 10px;
-    right: 10px;
+    padding: 15px;
+    left: 0px;
+    top: 140px;
+    box-shadow: 5px 3px 11px -4px rgb(171 171 171);
+    transition: 0.2s;
 }
 
-#addImage{
+.navButtons div{
+        color: black;
+        border-top: 2px solid var(--main-pink);
+        padding: 10px;
+        font-size: 20px;
+        cursor: pointer;
+}
+
+.labelImage{
     padding: 50px 0px 50px 0px;
     display: flex;
     flex-direction: column;
@@ -143,12 +146,12 @@ body{
     color: black;
 }
 
-img{
-    width: 240px;
-    height: 205px;
+.imageProduct{
+    width: 240px !important;
+    height: 205px !important;
 }
 
-#addImage p{
+.labelImage p{
     margin: 0;
     padding: 10px 18px;
     font-size: 28px;
@@ -160,5 +163,23 @@ img{
 }
 
 .imageRow{
-    gap: 13px;
+    gap: 45px !important;
+    max-width: 700px;
+}
+
+.imageRow .images{
+    display: flex;
+    flex-direction: row;
+    gap: 45px;
+    overflow-x: scroll;
+    max-width: 580px;
+    max-height: 305px;
+}
+
+.mainContentProduct{
+    height: min-content;
+    width: min-content;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
 }

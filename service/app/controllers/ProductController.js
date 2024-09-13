@@ -175,6 +175,31 @@ const ProductController = {
         }
     },
 
+    async selectOneProduct(req, res){
+        console.log(req.query);
+        const {id} = req.query;
+        if(!id){
+            return res.status(400).json({message: "Id não encontrado na requisição"});
+        }
+        try{
+            const category = await ProductDAO.selectCategoryById({id:id});
+            if(category.result){
+                res.status(200).json({
+                'type': "S",                            
+                'message': 'Sucesso ao selecionar categorias',
+                'data': category.data
+            });
+        }else{
+            res.status(500).json({
+                'type': "E",                            
+                'message': 'Erro interagir com o banco de dados'
+            });
+        }
+    } catch(e){
+        res.status(500).json({message: "Erro interno do servidor"});
+    }
+    },
+
     async deleteProduct(req, res){
         try{
             let product = new ProductModel(req.query);
@@ -324,6 +349,7 @@ const ProductController = {
             if(req.body != undefined && req.body != []){
                 let productModel = new ProductModel(req.body);
                 let userToken = new UserModel(req.decoded);
+                console.log(req.file);
                 if(req.file != undefined){
                     if(userToken.adm == true){
                         if(Utils.notEmpty(productModel.id)){

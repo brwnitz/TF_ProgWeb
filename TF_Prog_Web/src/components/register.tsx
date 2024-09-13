@@ -5,6 +5,8 @@ import Loading from "../modules/loading";
 import "../styles/register.css"
 import User from "../models/user";
 import axios from "axios";
+import Header from "../modules/header";
+import Footer from "../modules/footer";
 
 const Register = () => {
     const [loading, setLoading] = useState(false);
@@ -48,6 +50,7 @@ const Register = () => {
     }, [navigate])
   return (
     <>
+    <Header />
     <Loading message="Criando conta" isLoading={loading} />
     <body>
         <div class="registerModal">
@@ -67,6 +70,7 @@ const Register = () => {
             <p>Já possui uma conta? <a onClick={() => handleRegistered(navigate)}>Faça login</a></p>
         </div>
     </body>
+    <Footer/>
     </>
   );
 };

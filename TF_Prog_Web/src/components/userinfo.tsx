@@ -6,6 +6,8 @@ import Cookies from 'js-cookie';
 import Loading from "../modules/loading";
 import User from "../models/user";
 import axios from "axios";
+import Header from "../modules/header";
+import Footer from "../modules/footer";
 
 
 const Userinfo = () => {
@@ -112,6 +114,7 @@ const Userinfo = () => {
     
     return( 
         <>
+        <Header />
         <Loading message="Logging in..." isLoading={loading} />
         <button id="buttonLogout" onClick={() => handleLogout(navigate)}>Logout</button>
         <body>
@@ -156,6 +159,7 @@ const Userinfo = () => {
                 </form>
             </div>
          </body>
+         <Footer/>
     </>
     );
   };

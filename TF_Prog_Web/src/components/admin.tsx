@@ -6,6 +6,8 @@ import Cookies from 'js-cookie';
 import Loading from "../modules/loading";
 import User from "../models/user";
 import axios from "axios";
+import Header from "../modules/header";
+import Footer from "../modules/footer";
 
 
 const Userinfo = () => {
@@ -125,12 +127,9 @@ const Userinfo = () => {
 
     return( 
         <>
+        <Header />
         <Loading message="Logging in..." isLoading={loading} />
-        <div class="navButtons">
-            <button id="buttonLogout" onClick={() => handleLogout(navigate)}>Logout</button>
-            <button id="buttonSeeProduct" onClick={() => handleSeeProduct(navigate)}>Visualizar produtos cadastrados</button>
-            <button id="buttonSeeCateogires" onClick={() => handleSeeCategorie(navigate)}>Visualizar categorias cadastradas</button>
-        </div>
+        
         <body>
             <div class="userModal">
                 <form onSubmit={handleInfo}>
@@ -173,6 +172,7 @@ const Userinfo = () => {
                 </form>
             </div>
          </body>
+         <Footer/>
     </>
     );
   };

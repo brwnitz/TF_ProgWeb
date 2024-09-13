@@ -5,10 +5,17 @@ import Loading from "../modules/loading";
 import "../styles/register.css"
 import User from "../models/user";
 import axios from "axios";
+import Header from "../modules/header";
+import Footer from "../modules/footer";
+import Categorie from "../models/categorie";
+import Product from "../models/product";
+import Image from "../models/image";
 
 const RegisterProduct = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const [categories, setCategories] = useState<Categorie[]>();
+    const [image, setImage] = useState<(string | ArrayBuffer)[]>([]);
 
 
     function handleLogout(navigate: ReturnType<typeof useNavigate>) {
@@ -17,11 +24,86 @@ const RegisterProduct = () => {
         navigate('/login');
     }
 
+    function handleSucces(navigate: ReturnType<typeof useNavigate>) {
+        navigate('/viewProducts');
+    }
+
     const handleRegisterProduct = async (e: Event) => {
         e.preventDefault();
         setLoading(true);
         const target: any = e.target;
+        const product:Product = {
+            name: target[0].value,
+            description: target[1].value,
+            category: target[2].value,
+            price: target[3].value,
+            stock: target[4].value,
+            moreInfors: target[5].value,
+            ingredients: "0",
+        }
+
+        try{
+            const response = await axios.post("http://localhost:3001/registerProduct", product, { headers: { 'x-access-token': Cookies.get('token') } });
+            
+            if(response.data.type == "S"){
+                const imageObject:Image={
+                    link: image!!.toString(),
+                    id_packedLunch: response.data.id
+                }
+                const responseImage = await axios.post("http://localhost:3001/registerImageProduct", imageObject, { headers: { 'x-access-token': Cookies.get('token') } });
+                if(responseImage.data.type == "S"){
+                    alert("Produto cadastrado com sucesso!");
+                    handleSucces(navigate);
+                }
+                else{
+                    alert("Error: " + responseImage.data.message);
+                }
+                alert("Produto cadastrado com sucesso!");
+                handleSucces(navigate);
+            }else{
+                alert("Error: " + response.data.message);
+            }
+        } catch (error){
+            alert("Error: " + error);
+            console.error(error);
+        }
+        finally{
+            setLoading(false);
+        }
+        
       };
+
+      const handleLoadCategories = async () => {
+        setLoading(true);
+        try{
+            const response = await axios.get("http://localhost:3001/selectCategory");
+            if(response.data.type == "S"){
+                setCategories(response.data.data);
+            }else{
+                alert("Error: " + response.data.message);
+            }
+        } catch (error){
+            alert("Error: " + error);
+            console.error(error);
+        }
+        finally{
+            setLoading(false);
+        }
+    }
+
+    const handleImageUpload = (e: any) => {
+        const file = e.target.files[0]
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                if (reader.result) {
+                    setImage(prevImages => [...prevImages, reader.result as string | ArrayBuffer]);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
 
       useEffect(()=>{
         if(Cookies.get('token') == undefined || Cookies.get('loggedUser') == undefined){ 
@@ -31,8 +113,8 @@ const RegisterProduct = () => {
             const userLoad: User = JSON.parse(Cookies.get('loggedUser')!!);
             console.log(userLoad);
             if(userLoad.adm == true){
-            if(userLoad.adress != undefined && userLoad.adress != ""){
-            }
+                console.log("entrou adm");
+                handleLoadCategories();
             } else{
                 alert("Você não tem permissão para acessar essa página!");
                 handleLogout(navigate);
@@ -41,6 +123,7 @@ const RegisterProduct = () => {
     }, [navigate])
   return (
     <>
+    <Header />
         <Loading message="Carregando..." isLoading={loading} />
         <button id="buttonLogout" onClick={() => handleLogout(navigate)}>Logout</button>
         <body>
@@ -53,7 +136,12 @@ const RegisterProduct = () => {
                             <input type="text" placeholder="Descrição do produto" required/>
                         </div>
                         <div class="modalRow">
-                            <input type="email" placeholder="Categoria do produto" required/>
+                            <select name="selectCategorie" id="selectCategorie">
+                                <option value="placeholder">Selecione uma opção</option>
+                                {categories?.map((categorie) => (
+                                    <option value={categorie.id}>{categorie.name}</option>
+                                ))}
+                            </select>
                             <input type="number" placeholder="Valor (R$)" required/>
                         </div>
                         <div class="modalRow">
@@ -62,10 +150,14 @@ const RegisterProduct = () => {
                         </div>
                     </div>
                     <div class="modalImage">
-                    <p>Informações para entrega</p>
                         <div class="modalRow imageRow">
-                            <img src="" alt="Imagem" />
-                            <button type="button" id="addImage"><p>+</p>Adicionar imagem</button>
+                            <div class="images">
+                                {image?.map((image) => (
+                                    <img src={image.toString()} alt="Imagem" class="imageProduct"/>
+                                ))}
+                            </div>
+                            <label for="addImage" class="labelImage"><p>+</p>Adicionar imagem</label>
+                            <input type="file" id="addImage" accept="image/*" name="addImage" style="display:none" onChange={handleImageUpload}/>
                         </div>
                     </div>
                     <div class="modalRow">
@@ -74,6 +166,7 @@ const RegisterProduct = () => {
                 </form>
             </div>
          </body>
+         <Footer/>
     </>
   );
 };

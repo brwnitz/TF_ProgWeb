@@ -13,7 +13,8 @@
     "dotenv": "^16.4.5",
     "js-cookie": "^3.0.5",
     "preact": "^10.22.1",
-    "react-router-dom": "^6.26.0"
+    "react-router-dom": "^6.26.0",
+    "tf-prog-web": "file:"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.8.3",

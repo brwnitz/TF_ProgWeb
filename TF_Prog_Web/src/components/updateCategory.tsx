@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { useEffect, useState } from "react";
 import Loading from "../modules/loading";
@@ -9,10 +9,15 @@ import Header from "../modules/header";
 import Footer from "../modules/footer";
 import Categorie from "../models/categorie";
 
-const RegisterCategorie = () => {
+const UpdateCategory = () => {
     const [loading, setLoading] = useState(false);
+    const [categorie, setCategories] = useState<Categorie>();
     const navigate = useNavigate();
+    const location = useLocation();
 
+
+    const queryParams = new URLSearchParams(location.search);
+    const id = queryParams.get('id');
 
     function handleLogout(navigate: ReturnType<typeof useNavigate>) {
         Cookies.remove('loggedUser');
@@ -24,7 +29,26 @@ const RegisterCategorie = () => {
         navigate('/viewCategories');
     }
 
-      const handleRegisterCategorie = async (e: Event) => {
+    const handleLoadCategories = async () => {
+        setLoading(true);
+        try{
+            const response = await axios.get(`http://localhost:3001/selectCategoryById?id=${id}`);
+            console.log(response.data);
+            if(response.data.type == "S"){
+                setCategories(response.data.data[0]);
+            }else{
+                alert("Error: " + response.data.message);
+            }
+        } catch (error){
+            alert("Error: " + error);
+            console.error(error);
+        }
+        finally{
+            setLoading(false);
+        }
+    }
+
+      const handleUpdateCategorie = async (e: Event) => {
         e.preventDefault();
         setLoading(true);
         const target: any = e.target;
@@ -37,7 +61,7 @@ const RegisterCategorie = () => {
 
         try{
             const token = Cookies.get('token');
-            const response = await axios.post('http://localhost:3001/registerCategory', categorie, {headers:{'x-access-token': token}});
+            const response = await axios.put(`http://localhost:3001/updateCategory`, categorie, {headers:{'x-access-token': token}});
             if(response.data.type == "S"){
                 handleAdmin(navigate);
             }else{
@@ -57,15 +81,7 @@ const RegisterCategorie = () => {
             handleLogout(navigate);
         }
         else{
-            const userLoad: User = JSON.parse(Cookies.get('loggedUser')!!);
-            console.log(userLoad);
-            if(userLoad.adm == true){
-            if(userLoad.adress != undefined && userLoad.adress != ""){
-            }
-            } else{
-                alert("Você não tem permissão para acessar essa página!");
-                handleLogout(navigate);
-            }
+            handleLoadCategories();
         }
     }, [navigate])
   return (
@@ -75,12 +91,12 @@ const RegisterCategorie = () => {
         <button id="buttonLogout" onClick={() => handleLogout(navigate)}>Logout</button>
         <body>
             <div class="userModal">
-                <form onSubmit={handleRegisterCategorie}>
+                <form onSubmit={handleUpdateCategorie}>
                     <h1>Informações gerais</h1>
                     <div class="modalDivision">
                         <div class="modalRow">
-                            <input type="text" placeholder="Nome da categoria" required/>
-                            <input type="text" placeholder="Descrição da categoria" required/>
+                            <input type="text" value={categorie?.name} required/>
+                            <input type="text" value={categorie?.description} required/>
                         </div>
                     </div>
                     <div class="modalRow">
@@ -94,4 +110,4 @@ const RegisterCategorie = () => {
   );
 };
 
-export default RegisterCategorie;
+export default UpdateCategory;

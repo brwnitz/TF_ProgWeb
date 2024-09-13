@@ -88,6 +88,27 @@ const CategoryDao = {
         }
     },
 
+    async selectCategoryByRealId(id) {
+        try{
+            var connection = await connectionDB.openConnectionDB();
+
+            const result = await connection.promise().execute('SELECT * FROM category WHERE id = ?', [id]);
+            
+            await connection.end();
+            
+            if(result != null){
+                console.log("Sucesso na seleção!");
+                return ({result: true, message: "Sucesso na seleção!", data: result[0]});
+            }else{
+                console.log("Erro na seleção!");
+                return ({result: false, message: "Erro na seleção!", data: []});
+            }
+        }catch(error){
+            console.log(error);
+            return ({result: false, message: error, data: []});
+        }
+    },
+
     async updateCategory(categoryModel){
         try{
             var connection = await connectionDB.openConnectionDB();

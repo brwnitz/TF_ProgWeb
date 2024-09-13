@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Loading from "../modules/loading";
 import "../styles/login.css"
 import axios from "axios";
+import Header from "../modules/header";
+import Footer from "../modules/footer";
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
@@ -54,6 +56,7 @@ const Login = () => {
     }, [navigate])
   return (
     <>
+    <Header />
     <Loading message="Logging in..." isLoading={loading} />
     <body>
         <div class="loginModal">
@@ -67,6 +70,7 @@ const Login = () => {
             <p>Não possui uma conta? <a onClick={() => navigateRegister(navigate)}>Cadastre-se</a></p>
         </div>
     </body>
+    <Footer/>
     </>
   );
 };

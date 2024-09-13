@@ -6,11 +6,15 @@ import Cookies from 'js-cookie';
 import Loading from "../modules/loading";
 import User from "../models/user";
 import axios from "axios";
+import Header from "../modules/header";
+import Footer from "../modules/footer";
+import Product from "../models/product";
 
 
 const ViewProduct = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [products, setProducts] = useState<Product[]>();
     
     function handleLogout(navigate: ReturnType<typeof useNavigate>) {
         Cookies.remove('loggedUser');
@@ -21,6 +25,11 @@ const ViewProduct = () => {
     function handleRegisterProduct(navigate: ReturnType<typeof useNavigate>) {
         navigate('/registerProduct');
     }
+
+    function handleEditProduct(navigate: ReturnType<typeof useNavigate>, id: number) {
+        navigate(`/updateProduct?id=${id}`);
+    }
+
 
 
       const handleDeleteProduct = async (e: Event) => {
@@ -46,6 +55,24 @@ const ViewProduct = () => {
         }
     };
 
+    const handleLoadProducts = async () => {
+        setLoading(true);
+        try{
+            const response = await axios.get("http://localhost:3001/selectAllProduct");
+            if(response.data.type == "S"){
+                setProducts(response.data.data);
+            }else{
+                alert("Error: " + response.data.message);
+            }
+        } catch (error){
+            alert("Error: " + error);
+            console.error(error);
+        }
+        finally{
+            setLoading(false);
+        }
+    }
+
 
     useEffect(()=>{
         if(Cookies.get('token') == undefined || Cookies.get('loggedUser') == undefined){ 
@@ -55,6 +82,7 @@ const ViewProduct = () => {
             const userLoad: User = JSON.parse(Cookies.get('loggedUser')!!);
             console.log(userLoad);
             if(userLoad.adm == true){
+            handleLoadProducts();
         } else{
             alert("Você não tem permissão para acessar essa página!");
             handleLogout(navigate);
@@ -64,45 +92,23 @@ const ViewProduct = () => {
 
     return( 
         <>
+        <Header />
         <Loading message="Logging in..." isLoading={loading} />
-        <div class="navButtons">
-            <button id="buttonLogout" onClick={() => handleLogout(navigate)}>Logout</button>
-            <button id="buttonCadProduct" onClick={() => handleRegisterProduct(navigate)}>Cadastrar produto novo</button>
-        </div>
-        <body>
-            <div class="userModalProduct">
-                <div class="divProduct">
-                    <img src="" alt="Imagem" />
-                    <p class="nameProduct">Título</p>
-                    <span class="descImage">Sopa de macaco fresquinha bem boazinha nham nham</span>
-                </div>
-                <div class="divProduct">
-                    <img src="" alt="Imagem" />
-                    <p class="nameProduct">Título</p>
-                    <span class="descImage">Sopa de macaco fresquinha bem boazinha nham nham</span>
-                </div>
-                <div class="divProduct">
-                    <img src="" alt="Imagem" />
-                    <p class="nameProduct">Título</p>
-                    <span class="descImage">Sopa de macaco fresquinha bem boazinha nham nham</span>
-                </div>
-                <div class="divProduct">
-                    <img src="" alt="Imagem" />
-                    <p class="nameProduct">Título</p>
-                    <span class="descImage">Sopa de macaco fresquinha bem boazinha nham nham</span>
-                </div>
-                <div class="divProduct">
-                    <img src="" alt="Imagem" />
-                    <p class="nameProduct">Título</p>
-                    <span class="descImage">Sopa de macaco fresquinha bem boazinha nham nham</span>
-                </div>
-                <div class="divProduct">
-                    <img src="" alt="Imagem" />
-                    <p class="nameProduct">Título</p>
-                    <span class="descImage">Sopa de macaco fresquinha bem boazinha nham nham</span>
+        <body style="flex-direction:column;">
+            <div class="mainContentProduct">
+                <button id="buttonCadProduct" onClick={() => handleRegisterProduct(navigate)}>Cadastrar produto novo</button>
+                <div class="userModalProduct">
+                    {products?.map((product) => (
+                        <div class="divProduct" style="cursor:pointer;" onClick={()=>{handleEditProduct(navigate, product.id!!)}}>
+                            <img src="" alt="Imagem" />
+                            <p class="nameProduct">{product.name}</p>
+                            <span class="descImage">{product.description}</span>
+                        </div>
+                    ))}
                 </div>
             </div>
         </body>
+        <Footer/>
     </>
     );
   };

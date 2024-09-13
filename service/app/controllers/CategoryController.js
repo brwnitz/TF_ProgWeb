@@ -84,6 +84,30 @@ const CategoryController = {
             });
         }
     },
+
+    async selectOneCategory(req, res){
+        const {id} = req.query;
+        if(!id){
+            return res.status(400).json({message: "Id não encontrado na requisição"});
+        }
+        try{
+            const category = await CategoryDAO.selectCategoryById({id:id});
+            if(category.result){
+                res.status(200).json({
+                'type': "S",                            
+                'message': 'Sucesso ao selecionar categorias',
+                'data': category.data
+            });
+        }else{
+            res.status(500).json({
+                'type': "E",                            
+                'message': 'Erro interagir com o banco de dados'
+            });
+        }
+    } catch(e){
+        res.status(500).json({message: "Erro interno do servidor"});
+    }
+    },
     
 
 

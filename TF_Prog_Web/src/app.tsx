@@ -9,6 +9,8 @@ import RegisterProduct from './components/registerProduct';
 import ViewProduct from './components/viewProducts';
 import ViewCategorie from './components/viewCategories';
 import RegisterCategorie from './components/registerCategorie';
+import UpdateCategory from './components/updateCategory';
+import UpdateProduct from './components/updateProduct';
 
 export function App() {
   
@@ -26,6 +28,8 @@ export function App() {
         <Route path='/viewProducts' element={<ViewProduct/>} />
         <Route path='/viewCategories' element={<ViewCategorie/>} /> 
         <Route path='/registerCategorie' element={<RegisterCategorie/>} />
+        <Route path='/updateCategory' element={<UpdateCategory/>} />
+        <Route path='/updateProduct' element={<UpdateProduct/>} />
       </Routes>
     </Router>
   );
