@@ -116,12 +116,13 @@ img{
 
 .divProduct{
     display: flex;
-    justify-content: center;
     align-items: start;
+    justify-content: start;
     flex-direction: column;
     background-color: #F8F8FD;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 315px;
+    height: 100%;
 }
 
 .divProduct p{
@@ -139,4 +140,5 @@ img{
     text-align: start;
     height: min-content;
     padding: 0px 10px;
+    line-break: anywhere;
 }

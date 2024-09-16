@@ -1,7 +1,7 @@
 class ImagesModel {
     constructor(imageModel) {
         this.id = imageModel.id,
-        this.link = imageModel.link
+        this.base64 = imageModel.base64
         this.id_packedLunch = imageModel.id_packedLunch
     }
   }

@@ -105,10 +105,15 @@ const Userinfo = () => {
         else{
             const userLoad: User = JSON.parse(Cookies.get('loggedUser')!!);
             console.log(userLoad);
+            if(userLoad.adm != true){
             setUser(userLoad);
             if(userLoad.adress != undefined && userLoad.adress != ""){
                 deconstructAddress(userLoad.adress);
             }
+        } else{
+            alert("Você não tem permissão para acessar essa página!");
+            handleLogout(navigate);
+        }
         }
     }, [navigate])
     

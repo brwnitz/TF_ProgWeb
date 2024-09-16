@@ -15,7 +15,7 @@ const RegisterProduct = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [categories, setCategories] = useState<Categorie[]>();
-    const [image, setImage] = useState<(string | ArrayBuffer)[]>([]);
+    const [images, setImages] = useState<File[]>([]);
 
 
     function handleLogout(navigate: ReturnType<typeof useNavigate>) {
@@ -46,11 +46,12 @@ const RegisterProduct = () => {
             const response = await axios.post("http://localhost:3001/registerProduct", product, { headers: { 'x-access-token': Cookies.get('token') } });
             
             if(response.data.type == "S"){
-                const imageObject:Image={
-                    link: image!!.toString(),
-                    id_packedLunch: response.data.id
-                }
-                const responseImage = await axios.post("http://localhost:3001/registerImageProduct", imageObject, { headers: { 'x-access-token': Cookies.get('token') } });
+                const formData = new FormData();
+                images.forEach((image, index)=>{
+                    formData.append(`image_${index}`, image);
+                })
+                formData.append("id_packedLunch", response.data.id);
+                const responseImage = await axios.post("http://localhost:3001/registerImageProduct", formData, { headers: { 'x-access-token': Cookies.get('token'), 'Content-Type':'multipart/form-data' } });
                 if(responseImage.data.type == "S"){
                     alert("Produto cadastrado com sucesso!");
                     handleSucces(navigate);
@@ -92,15 +93,9 @@ const RegisterProduct = () => {
     }
 
     const handleImageUpload = (e: any) => {
-        const file = e.target.files[0]
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                if (reader.result) {
-                    setImage(prevImages => [...prevImages, reader.result as string | ArrayBuffer]);
-                }
-            };
-            reader.readAsDataURL(file);
+        const files:File[] = e.target.files
+        if (files) {
+            setImages(prevImages => [...prevImages, ...Array.from(files)]);
         }
     };
 
@@ -152,8 +147,8 @@ const RegisterProduct = () => {
                     <div class="modalImage">
                         <div class="modalRow imageRow">
                             <div class="images">
-                                {image?.map((image) => (
-                                    <img src={image.toString()} alt="Imagem" class="imageProduct"/>
+                                {images?.map((image,index) => (
+                                    <img key={index} src={URL.createObjectURL(image)} alt="Imagem" class="imageProduct"/>
                                 ))}
                             </div>
                             <label for="addImage" class="labelImage"><p>+</p>Adicionar imagem</label>
