@@ -4,10 +4,12 @@ const bodyParser = require('body-parser')
 const express = require("express");
 const cors = require('cors');
 
+const path = require('path');
+
 
 const app = express();
 app.use(cors());
-app.use("/public/uploads", express.static("public/uploads"));
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 
 app.use(express.json())
@@ -19,5 +21,6 @@ dbtables.createDBAndTables();
 
 const port = 3001;
 app.listen(port, () => {
+    console.log('Servindo arquivos estáticos da pasta:', path.join(__dirname, 'public/uploads'));
     console.log("Runing! - Servidor iniciado e executando na porta: " + port);
 });

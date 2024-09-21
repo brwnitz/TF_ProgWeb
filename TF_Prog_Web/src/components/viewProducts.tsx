@@ -10,6 +10,8 @@ import Header from "../modules/header";
 import Footer from "../modules/footer";
 import Product from "../models/product";
 
+const urlBase = "http://localhost:3001/"
+
 
 const ViewProduct = () => {
     const navigate = useNavigate();
@@ -100,7 +102,8 @@ const ViewProduct = () => {
                 <div class="userModalProduct">
                     {products?.map((product) => (
                         <div class="divProduct" style="cursor:pointer;" onClick={()=>{handleEditProduct(navigate, product.id!!)}}>
-                            <img src="" alt="Imagem" />
+                            
+                            <img src={product.images.length > 0 ? urlBase+product.images[0].link : ""} alt="Imagem" />
                             <p class="nameProduct">{product.name}</p>
                             <span class="descImage">{product.description}</span>
                         </div>

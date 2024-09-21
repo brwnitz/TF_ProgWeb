@@ -7,15 +7,12 @@ const ProductDao = {
     async insertProduct(productModel) {
         try{
             var connection = await connectionDB.openConnectionDB();
-            var results = await connection.execute(`INSERT INTO packedLunch(name, description, ingredients, price, moreInfors, stock, category) VALUES (?,?,?,?,?,?,?)`, [ productModel.name, productModel.description, productModel.ingredients, productModel.price, productModel.moreInfors, productModel.stock, productModel.category]);
-            
+            var results = await connectionDB.executeQuery(connection, `INSERT INTO packedLunch(name, description, ingredients, price, moreInfors, stock, category) VALUES ("${productModel.name}", "${productModel.description}", "${productModel.ingredients}", ${productModel.price}, "${productModel.moreInfors}", ${productModel.stock}, ${productModel.category})`);
             await connection.end();
-            
+            console.log(results)
             if(results != null){
                 console.log("Sucesso na inseção!");
                 let lastProduct = await ProductDao.selectLastProduct();
-                console.log(lastProduct)
-                
                 return ({result: true, message: "Sucesso na inseção!", id: lastProduct.data[0].id});
             }else{
                 console.log("Erro na inseção!");

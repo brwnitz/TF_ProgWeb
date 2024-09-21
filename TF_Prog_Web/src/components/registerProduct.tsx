@@ -44,21 +44,21 @@ const RegisterProduct = () => {
 
         try{
             const response = await axios.post("http://localhost:3001/registerProduct", product, { headers: { 'x-access-token': Cookies.get('token') } });
-            
+            var countSendImages = 0;
             if(response.data.type == "S"){
-                const formData = new FormData();
-                images.forEach((image, index)=>{
-                    formData.append(`image_${index}`, image);
-                })
-                formData.append("id_packedLunch", response.data.id);
-                const responseImage = await axios.post("http://localhost:3001/registerImageProduct", formData, { headers: { 'x-access-token': Cookies.get('token'), 'Content-Type':'multipart/form-data' } });
-                if(responseImage.data.type == "S"){
-                    alert("Produto cadastrado com sucesso!");
-                    handleSucces(navigate);
-                }
-                else{
-                    alert("Error: " + responseImage.data.message);
-                }
+                
+                await images.forEach(async (image, index)=>{
+                    const formData = new FormData();
+                    formData.append("imageProduct", image);
+                    formData.append("id", response.data.id);
+                    const responseImage = await axios.post("http://localhost:3001/registerImageProduct", formData, { headers: { 'x-access-token': Cookies.get('token'), 'Content-Type':'multipart/form-data' } });
+                    
+                    if(responseImage.data.type == "S"){
+                        countSendImages++
+                    }
+                    
+                });
+
                 alert("Produto cadastrado com sucesso!");
                 handleSucces(navigate);
             }else{
@@ -73,6 +73,11 @@ const RegisterProduct = () => {
         }
         
       };
+
+
+      
+      
+      
 
       const handleLoadCategories = async () => {
         setLoading(true);

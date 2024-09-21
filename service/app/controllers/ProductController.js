@@ -87,6 +87,7 @@ const ProductController = {
     async selectAllProducts(req, res){
         let products = await ProductDAO.selectAllProduct();
         if(products.result){
+            resultProducts = await ProductController.getImagesProduct(products.data);
             res.status(200).json({
                 'type': "S",                            
                 'message': 'Sucesso ao selecionar todos os produtos',
@@ -106,6 +107,9 @@ const ProductController = {
                 if(Utils.notEmpty(req.body.category)){
                     let products = await ProductDAO.selectAllProductsByCategory();
                     if(products.result){
+
+
+
                         res.status(200).json({
                             'type': "S",                            
                             'message': 'Sucesso ao selecionar os produtos',
@@ -353,7 +357,7 @@ const ProductController = {
                 if(req.file != undefined){
                     if(userToken.adm == true){
                         if(Utils.notEmpty(productModel.id)){
-                            let imageModel = new ImagesModel({id_packedLunch: productModel.id, link: req.file.path.replace(/\\/g, '/')});
+                            let imageModel = new ImagesModel({id_packedLunch: productModel.id, link: 'uploads/'+req.file.filename});
                             let intBD = await ImageDAO.insertImageProduct(imageModel);
                             if(intBD.result){
                                 res.status(200).json({
@@ -454,6 +458,21 @@ const ProductController = {
         }    
 
     },
+
+    async getImagesProduct(dataProducts){
+        if(dataProducts.length > 0){
+            for(var i = 0; i < dataProducts.length; i++){
+                resultImages = await ImageDAO.selectAllImageProduct({id_packedLunch: dataProducts[i].id});
+                if(resultImages.data == undefined || resultImages.data == null){
+                    resultImages.data = [];
+                }
+                dataProducts[i].images = resultImages.data;   
+            }
+            return dataProducts;
+        }else{
+            return [];
+        }
+    }
 
 
 
