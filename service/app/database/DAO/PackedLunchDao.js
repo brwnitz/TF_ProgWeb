@@ -49,6 +49,30 @@ const ProductDao = {
         }
     },
 
+    async selectOutOfStockProducts() {
+        try {
+            var connection = await connectionDB.openConnectionDB();
+            const result = await connection.promise().execute(
+                `SELECT id, description, price 
+                 FROM packedLunch 
+                 WHERE stock <= 0 
+                 ORDER BY description ASC`
+            );
+            await connection.end();
+
+            if (result != null) {
+                console.log("Sucesso na seleção!");
+                return ({ result: true, message: "Sucesso na seleção!", data: result[0] });
+            } else {
+                console.log("Erro na seleção!");
+                return ({ result: false, message: "Erro na seleção!", data: [] });
+            }
+        } catch (error) {
+            console.log(error);
+            return ({ result: false, message: error, data: [] });
+        }
+    },
+
 
 
     async selectProduct(productModel) {
@@ -56,6 +80,27 @@ const ProductDao = {
             var connection = await connectionDB.openConnectionDB();
 
             const result = await connection.promise().execute('SELECT * FROM packedLunch WHERE name = ?', [productModel.name]);
+            
+            await connection.end();
+            
+            if(result != null){
+                console.log("Sucesso na seleção!");
+                return ({result: true, message: "Sucesso na seleção!", data: result[0]});
+            }else{
+                console.log("Erro na seleção!");
+                return ({result: false, message: "Erro na seleção!", data: []});
+            }
+        }catch(error){
+            console.log(error);
+            return ({result: false, message: error, data: []});
+        }
+    },
+
+    async selectProductById(productModel) {
+        try{
+            var connection = await connectionDB.openConnectionDB();
+
+            const result = await connection.promise().execute('SELECT * FROM packedLunch WHERE id = ?', [productModel.id]);
             
             await connection.end();
             

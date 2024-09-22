@@ -103,46 +103,6 @@ const ProductController = {
 
     async selectAllProductsByCategory(req, res){
         try{
-            if(req.body != [] && req.body != undefined ){
-                if(Utils.notEmpty(req.body.category)){
-                    let products = await ProductDAO.selectAllProductsByCategory();
-                    if(products.result){
-
-
-
-                        res.status(200).json({
-                            'type': "S",                            
-                            'message': 'Sucesso ao selecionar os produtos',
-                            'data': products.data
-                        });
-                    }else{
-                        res.status(500).json({
-                            'type': "E",                            
-                            'message': 'Erro interagir com o banco de dados'
-                        });
-                    }
-                }else{
-                    res.status(400).json({
-                        'type': "E",                            
-                        'message': 'Dados necessário para pesquisa não encontrados na requisição'
-                    });
-                }
-            }else{
-                res.status(400).json({
-                    'type': "E",                            
-                    'message': 'Corpo da requisição está vazio'
-                });
-            }
-        }catch(e){
-            res.status(500).json({
-                'type': "E",                            
-                'message': 'Erro interno do servidor'
-            });
-        }
-    },
-
-    async selectAllProductsByCategory(req, res){
-        try{
             if(req.query != [] && req.query != undefined ){
                 if(Utils.notEmpty(req.query.category)){
                     let products = await ProductDAO.selectProductByCategory({category: req.query.category});
@@ -457,6 +417,45 @@ const ProductController = {
             });
         }    
 
+    },
+
+    async selectReportProductWithoutStock(req, res){
+        try{
+            if(req.query != [] && req.query != undefined ){
+                let userToken = new UserModel(req.decoded);
+                if(userToken.adm == true){
+                        let report = await ProductDAO.selectOutOfStockProducts();
+                        if(report.result){
+                            res.status(200).json({
+                                'type': "S",                            
+                                'message': 'Sucesso ao selecionar relatório',
+                                'data': report
+                            });
+                        }else{
+                            res.status(500).json({
+                                'type': "E",                            
+                                'message': 'Erro interagir com o banco de dados'
+                            });
+                        }
+                }else{
+                    res.status(400).json({
+                        'type': "E",                            
+                        'message': 'Corpo da requisição está vazio'
+                    });
+                }
+            }else{
+                res.status(400).json({
+                    'type': "E",                            
+                    'message': 'Usuário sem permissão para ação'
+                });
+            }
+        }catch(e){
+            console.log(e.message);
+            res.status(500).json({
+                'type': "E",                            
+                'message': 'Erro interno do servidor'
+            });
+        }
     },
 
     async getImagesProduct(dataProducts){

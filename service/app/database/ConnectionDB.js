@@ -95,7 +95,8 @@ const connectionDB = {
           CREATE TABLE IF NOT EXISTS sales (
             id INT AUTO_INCREMENT PRIMARY KEY,
             date_time TIMESTAMP NOT NULL,
-            codeSale VARCHAR(30) NOT NULL,
+            codeSale VARCHAR(40) NOT NULL,
+            valueTotal DOUBLE NOT NULL,
             id_user INT NOT NULL,
             FOREIGN KEY (id_user) REFERENCES users(id)
           )
