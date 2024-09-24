@@ -41,6 +41,10 @@ function handleNavigationCart(navigate: ReturnType<typeof useNavigate>) {
     navigate('/viewCart');
 }
 
+function handleNavigationSales(navigate: ReturnType<typeof useNavigate>) {
+    navigate('/viewSales');
+}
+
 const Header = () => {
     const navigate = useNavigate();
     const [menu, setMenu] = useState<boolean>(false);
@@ -114,6 +118,7 @@ const Header = () => {
             !admin && (
                 <div class="navButtons">
                     <div id="buttonSeeKits" onClick={()=> handleSeeKits(navigate)}><i></i><span>Ver kits</span></div>
+                    <div id="buttonSeeSales" onClick={()=> handleNavigationSales(navigate)}><i></i><span>Ver histórico</span></div>
                 </div>
             )
         }

@@ -9,15 +9,15 @@ import axios from "axios";
 import Header from "../modules/header";
 import Footer from "../modules/footer";
 import Product from "../models/product";
+import Sale from "../models/sale";
 
 const urlBase = "http://localhost:3001/"
 
 
-const ViewKits = () => {
+const ViewSales = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const [products, setProducts] = useState<Product[]>();
-    const [cart, setCart] = useState<Product[]>([]);
+    const [sales, setSales] = useState<Sale[]>();
     
     function handleLogout(navigate: ReturnType<typeof useNavigate>) {
         Cookies.remove('loggedUser');
@@ -29,24 +29,13 @@ const ViewKits = () => {
         navigate('/registerProduct');
     }
 
-    const handleAddCart = (product: Product) => {
-        setCart([...cart, product]);
-        Cookies.set('cart', JSON.stringify(cart));
-        console.log(JSON.stringify(cart));
-    }
-
-    const handleRemoveCart = (product: Product) => {
-        const newCart = cart.filter((item) => item.id !== product.id);
-        setCart(newCart);
-        Cookies.set('cart', JSON.stringify(newCart));
-    }
 
     const handleLoadProducts = async () => {
         setLoading(true);
         try{
-            const response = await axios.get("http://localhost:3001/selectAllProduct");
+            const response = await axios.get("http://localhost:3001/selectAllSalesUser");
             if(response.data.type == "S"){
-                setProducts(response.data.data);
+                setSales(response.data.data);
             }else{
                 alert("Error: " + response.data.message);
             }
@@ -83,17 +72,12 @@ const ViewKits = () => {
         <body style="flex-direction:column;">
             <div class="mainContentProduct">
                 <div class="userModalProduct">
-                    {products?.map((product) => (
-                        <div class="divProduct" style="cursor:pointer;">
+                    {sales?.map((sale) => (
+                        <div class="divProduct">
                             
-                            <img src={product.images.length > 0 ? urlBase+product.images[0].link : ""} alt="Imagem" />
-                            <p class="nameProduct">{product.name}</p>
-                            <div class="rowButtons">
-                                <button type="button" onClick={() => handleAddCart(product)}>Adicionar</button>
-                                <button type="button" onClick={() => handleRemoveCart(product)}>Remover</button>
-                            </div>
-                            <span class="descImage">{product.description}</span>
-                            <span class="descImage">R$ {product.price}</span>
+                            <p class="nameProduct">{sale.codeSale}</p>
+                            <span class="descImage">{sale.valueTotal}</span>
+                
                         </div>
                     ))}
                 </div>
@@ -104,4 +88,4 @@ const ViewKits = () => {
     );
   };
   
-  export default ViewKits;
+  export default ViewSales;

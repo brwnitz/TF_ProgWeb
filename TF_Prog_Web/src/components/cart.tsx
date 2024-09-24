@@ -10,6 +10,9 @@ import Header from "../modules/header";
 import Footer from "../modules/footer";
 import Categorie from "../models/categorie";
 import Product from "../models/product";
+import Sale from "../models/sale";
+import SaleItem from "../models/saleItem";
+import { v4 as uuidv4 } from 'uuid';
 
 
 const ViewCart = () => {
@@ -54,6 +57,45 @@ const ViewCart = () => {
         Cookies.set('cart', JSON.stringify(newCart));
     }
 
+    const handleFinishSale = async () => {
+        setLoading(true);
+        try{
+            const cart: Product[] = JSON.parse(Cookies.get('cart')!!);
+            const user: User = JSON.parse(Cookies.get('loggedUser')!!);
+            console.log(user);
+            const saleItem: SaleItem[] = [];
+            cart.forEach((product) => {
+                saleItem.push({
+                    id_packedLunch: product.id!!,
+                    qtd: 1
+                });
+            });
+            const date = new Date();
+            const formattedDate = date.toISOString().split('T')[0];
+            const sale:Sale = {
+                id: 0,
+                date_time: formattedDate,
+                codeSale: uuidv4(),
+                id_user: user.id!!,
+                saleItems: saleItem,
+                valueTotal: cart.reduce((total, product) => total + product.price, 0)
+            }
+            const response = await axios.post('http://localhost:3001/registerSale', sale, {headers:{'x-access-token': Cookies.get('token')}});
+            if(response.data.type == "S"){
+                alert("Compra realizada com sucesso!");
+                Cookies.set('cart', JSON.stringify([]));
+                navigate('/');
+            } else {
+                alert("Erro: " + response.data.message);
+            }
+        } catch (error){
+            alert("Error: " + error);
+            console.error(error);
+        } finally{
+            setLoading(false);
+        }
+    }
+
 
     useEffect(()=>{
         if(Cookies.get('token') == undefined || Cookies.get('loggedUser') == undefined){ 
@@ -89,10 +131,15 @@ const ViewCart = () => {
                                 <p class="tinyP">1</p>
                                 <span class="tinySpan">Items</span>
                             </div>
+                            <div class="itemColumn">
+                                <p class="tinyP">R${product.price}</p>
+                                <span class="tinySpan">Valor</span>
+                            </div>
                             <button type="button" class="buttonAddCart" onClick={()=>{handleRemoveCart(product)}}>Remover</button>
                             <button type="button" class="buttonAddCart" onClick={()=>{handleAddCart(product)}}>Adicionar mais</button>
                         </div>
                     ))}
+                    <button id="buttonCadProduct" onClick={() => handleFinishSale()}>Finalizar compra</button>
                 </div>
             </div>
         </body>
