@@ -142,3 +142,10 @@ img{
     padding: 0px 10px;
     line-break: anywhere;
 }
+
+.rowButtons button{
+    background: var(--main-pink);
+    margin-left: 10px;
+    font-style: italic;
+    font-weight: 400;
+}
