@@ -30,10 +30,11 @@ const ViewSales = () => {
     }
 
 
-    const handleLoadProducts = async () => {
+    const handleLoadProducts = async (id:number) => {
         setLoading(true);
         try{
-            const response = await axios.get("http://localhost:3001/selectAllSalesUser");
+            console.log(id);
+            const response = await axios.get(`http://localhost:3001/selectAllSalesUser?id=${id}`, { headers: { 'x-access-token': Cookies.get('token') } });
             if(response.data.type == "S"){
                 setSales(response.data.data);
             }else{
@@ -57,7 +58,7 @@ const ViewSales = () => {
             const userLoad: User = JSON.parse(Cookies.get('loggedUser')!!);
             console.log(userLoad);
             if(userLoad.adm == false){
-            handleLoadProducts();
+            handleLoadProducts(userLoad.id!!);
         } else{
             alert("Você não tem permissão para acessar essa página!");
             handleLogout(navigate);
@@ -76,7 +77,7 @@ const ViewSales = () => {
                         <div class="divProduct">
                             
                             <p class="nameProduct">{sale.codeSale}</p>
-                            <span class="descImage">{sale.valueTotal}</span>
+                            <span class="descImage">R$ {sale.valueTotal}</span>
                 
                         </div>
                     ))}
