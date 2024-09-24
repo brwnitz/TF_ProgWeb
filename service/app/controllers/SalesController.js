@@ -11,6 +11,7 @@ const SalesController = {
         try{
             if(req.body != [] && req.body != undefined ){
                 let saleModel = new SaleModel(req.body);
+                console.log(saleModel);
                     if(Utils.notEmpty(saleModel.date_time) && Utils.notEmpty(saleModel.codeSale) && Utils.notEmpty(saleModel.id_user) && saleModel.saleItems.length > 0){
                         let existSale = await SalesDAO.selectAllSalesFromUsersCodeSale(saleModel);
                         if(existSale.result){

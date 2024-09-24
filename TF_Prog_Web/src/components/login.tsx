@@ -15,7 +15,7 @@ const Login = () => {
         navigator(`/admin`);
       }
       else{
-        navigator(`/dashboard`);
+        navigator(`/userInfo`);
       }
     }
     function navigateRegister(navigator: ReturnType<typeof useNavigate>) {

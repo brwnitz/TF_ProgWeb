@@ -14,6 +14,7 @@ import UpdateProduct from './components/updateProduct';
 import Dashboard from './components/dashboard';
 import ViewKits from './components/kits';
 import ViewCart from './components/cart';
+import ViewSales from './components/viewSales';
 
 export function App() {
   
@@ -36,6 +37,7 @@ export function App() {
         <Route path='/updateProduct' element={<UpdateProduct/>} />
         <Route path='/viewKits' element={<ViewKits/>} />
         <Route path='/viewCart' element={<ViewCart/>} />
+        <Route path='/viewSales' element={<ViewSales/>} />
       </Routes>
     </Router>
   );
