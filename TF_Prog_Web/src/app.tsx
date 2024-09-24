@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Login from './components/login'; // Adjust the path as necessary
-import Dashboard from './components/userinfo'; // Adjust the path as necessary
+import UserInfor from './components/userinfo'; // Adjust the path as necessary
 import Home from './components/home'; // Adjust the path as necessary
 import Register from './components/register';
 import Admin from './components/admin';
@@ -11,6 +11,7 @@ import ViewCategorie from './components/viewCategories';
 import RegisterCategorie from './components/registerCategorie';
 import UpdateCategory from './components/updateCategory';
 import UpdateProduct from './components/updateProduct';
+import Dashboard from './components/dashboard';
 
 export function App() {
   
@@ -20,7 +21,8 @@ export function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path='/register' element={<Register />} />
-        <Route path="/dashboard" element={Cookies.get('loggedUser') != undefined ? <Dashboard/> : <Login/>}/>
+        <Route path="/userInfo" element={Cookies.get('loggedUser') != undefined ? <UserInfor/> : <Login/>}/>
+        <Route path='/dashboard' element={<Dashboard />} />
         <Route path="/" element={<Home />} />
         <Route path="*" element={<Navigate to="/" />} />
         <Route path='/admin' element={<Admin/>} />

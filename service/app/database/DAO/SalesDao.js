@@ -6,7 +6,7 @@ const SalesDao = {
         try {
             var connection = await connectionDB.openConnectionDB();
             var results = await connectionDB.executeQuery(connection, 
-                `INSERT INTO sales (date_time, codeSale, id_user) VALUES ("${saleModel.date_time}", "${saleModel.codeSale}", ${saleModel.id_user})`
+                `INSERT INTO sales (date_time, codeSale, id_user, valueTotal) VALUES ("${saleModel.date_time}", "${saleModel.codeSale}", ${saleModel.id_user}, ${saleModel.valueTotal})`
             );
             await connection.end();
             

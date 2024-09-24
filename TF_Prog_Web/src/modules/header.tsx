@@ -19,6 +19,10 @@ function handleSeeProduct(navigate: ReturnType<typeof useNavigate>) {
     navigate('/viewProducts');
 }
 
+function handleDashboard(navigate: ReturnType<typeof useNavigate>) {
+    navigate('/dashboard');
+}
+
 function handleSeeCategorie(navigate: ReturnType<typeof useNavigate>) {
     navigate('/viewCategories');
 }
@@ -93,6 +97,7 @@ const Header = () => {
         </header>
         {admin && (
             <div class="navButtons">
+                <div id="buttonDashboard" onClick={() => handleDashboard(navigate)}><i></i><span>Dashboard</span></div>
                 <div id="buttonSeeProduct" onClick={() => handleSeeProduct(navigate)}><i></i><span>Ver produtos</span></div>
                 <div id="buttonSeeCateogires" onClick={() => handleSeeCategorie(navigate)}><i></i><span>Ver categorias</span></div>
             </div>

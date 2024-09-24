@@ -4,7 +4,8 @@ class SaleModel {
         this.date_time = sale.date_time,
         this.codeSale = sale.codeSale,
         this.id_user = sale.id_user,
-        this.saleItems = sale.saleItems 
+        this.saleItems = sale.saleItems, 
+        this.valueTotal = sale.valueTotal
     }
 }
   

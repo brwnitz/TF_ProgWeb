@@ -62,3 +62,130 @@
 .read-the-docs {
   color: #888;
 }
+
+.containerDiv{
+  width: 70%;
+}
+
+.elementSpaceBetween{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.elementColumn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.custom-line {
+  border: none;
+  height: 2px; 
+  background-color: #3e0062; 
+  margin: 20px 0; 
+  width: 100%;
+}
+
+.no-margin{
+  margin: 0px;
+}
+
+.mt-100{
+  margin-top: 100px;
+}
+
+
+.mt-5{
+  margin-top: 5px;
+  margin-bottom: 0px;
+}
+
+.text-left{
+  text-align: left; 
+  color: #3e0062; 
+}
+
+.text-right{
+  text-align: right; 
+  color: #3e0062;
+}
+
+.containerMetrics{
+  width: 100%;
+  height: 300px;
+}
+
+.mainContainer{
+  padding: 50px;
+  background-color: #F8F8F8;
+  width: 100%;
+  height: 400px;
+}
+
+/* Container para o campo de data e botão */
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espaço entre o campo de data e o botão */
+}
+
+/* Estilização do campo de data */
+.date-field {
+  padding: 10px;
+  border: 2px solid #ff0084; /* Cor roxa */
+  border-radius: 5px;
+  color: #ff0084;
+  background-color: white;
+  font-size: 12px;
+  height: 10px;
+  width: 150px;
+  box-shadow: none;
+}
+
+.date-field:focus {
+  outline: none;
+  border-color: #3e0062; /* Cor rosa ao focar */
+}
+
+/* Estilização do botão */
+.search-button {
+  background-color: #ff0084; /* Cor rosa */
+  border: none;
+  padding: 10px;
+  width: 33.2px;
+  height: 33.2px;
+  border-radius: 50%; /* Torna o botão circular */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-button i {
+  color: white; /* Ícone de busca em branco */
+  font-size: 18px;
+}
+
+/* Adiciona efeito ao passar o mouse sobre o botão */
+.search-button:hover {
+  background-color: #3e0062;
+}
+
+.center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalRowDates{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.mr-15{
+  margin-right: 15px;
+}
+

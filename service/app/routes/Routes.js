@@ -7,6 +7,7 @@ const path = require('path');
 
 const multer  = require('multer');
 const ProductController = require('../controllers/ProductController');
+const SalesController = require('../controllers/SalesController');
 
 
 
@@ -56,6 +57,17 @@ router.get('/selectProductById', ProductController.selectOneProduct);
 router.get('/selectProductByCategory', ProductController.selectAllProductsByCategory); 
 router.put('/updateProduct', ValidTokenController.validToken, ProductController.updateProduct);
 router.delete('/deleteProduct', ValidTokenController.validToken, ProductController.deleteProduct);
+
+//relatórios
+router.get('/reportStock', ValidTokenController.validToken, ProductController.selectReportProductWithoutStock);
+router.get('/reportSaleClient', ValidTokenController.validToken, SalesController.selectReportTotalPurchasesPerClient);
+router.get('/reportSalesValueTotal', ValidTokenController.validToken, SalesController.selectReportSalesValueTotal);
+
+router.post('/registerSale', ValidTokenController.validToken, SalesController.insertSale);
+router.get('/selectAllSales', ValidTokenController.validToken, SalesController.selectAllSales);
+router.get('/selectAllSalesUser', ValidTokenController.validToken, SalesController.selectAllSalesUser);
+router.delete('/deleteSale', ValidTokenController.validToken, SalesController.deleteSale);
+
 
 
 
