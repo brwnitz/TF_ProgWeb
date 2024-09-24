@@ -13,8 +13,7 @@ const SalesItemsDao = {
             
             if(results != null) {
                 console.log("Sucesso na inserção!");
-                let lastSalesItem = await SalesItemsDao.selectLastSalesItem();
-                return ({result: true, message: "Sucesso na inserção!", id: lastSalesItem.data[0].id});
+                return ({result: true, message: "Sucesso na inserção!"});
             } else {
                 console.log("Erro na inserção!");
                 return ({result: false, message: "Erro na inserção!"});

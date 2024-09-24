@@ -26,6 +26,9 @@ const SalesController = {
                                                     if(updateStockProduct.result){
                                                         var saleItemModel = new SaleItemsModel(saleModel.saleItems[i]);
                                                         saleItemModel.id_sale = intBD.id;
+                                                        if(saleItemModel.observations == undefined || saleItemModel.observations == null ){
+                                                            saleItemModel.observations = "";
+                                                        }
                                                         let insertItemDB = await SalesItemsDao.insertSalesItem(saleItemModel);
                                                         if(insertItemDB.result){
                                                             countInsertItems++;
@@ -96,7 +99,7 @@ const SalesController = {
     async selectAllSales(req, res){
         let sales = await SalesDAO.selectAllSales();
         if(sales.result){
-            resultsales = await SalesController.getSaleItems(sales.data);
+            var resultSales = await SalesController.getSaleItems(sales.data);
             res.status(200).json({
                 'type': "S",                            
                 'message': 'Sucesso ao selecionar todas as vendas',
@@ -118,7 +121,7 @@ const SalesController = {
                 if(Utils.notEmpty(req.query.id_user)){
                     let sales = await SalesDAO.selectAllSalesFromUsers({id_user: req.query.id_user});
                     if(sales.result){
-                        resultsales = await SalesController.getSaleItems(sales.data);
+                        var resultSales = await SalesController.getSaleItems(sales.data);
                         res.status(200).json({
                             'type': "S",                            
                             'message': 'Sucesso ao selecionar as vendas',

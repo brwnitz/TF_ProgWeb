@@ -106,12 +106,10 @@ const connectionDB = {
           CREATE TABLE IF NOT EXISTS salesItems (
             id INT AUTO_INCREMENT PRIMARY KEY,
             id_sale INT NOT NULL,
-            id_kit INT NULL,
             id_packedLunch INT NOT NULL,
             observations TEXT NULL,
             qtd INT NOT NULL,
             FOREIGN KEY (id_sale) REFERENCES sales(id),
-            FOREIGN KEY (id_kit) REFERENCES kit(id),
             FOREIGN KEY (id_packedLunch) REFERENCES packedLunch(id)
           )
         `;
@@ -150,9 +148,7 @@ const connectionDB = {
           CREATE TABLE IF NOT EXISTS fav (
             id INT AUTO_INCREMENT PRIMARY KEY,
             id_user INT NOT NULL,
-            id_kit INT,
             id_packedLunch INT,
-            FOREIGN KEY (id_kit) REFERENCES kit(id),
             FOREIGN KEY (id_packedLunch) REFERENCES packedLunch(id),
             FOREIGN KEY (id_user) REFERENCES users(id)
 
