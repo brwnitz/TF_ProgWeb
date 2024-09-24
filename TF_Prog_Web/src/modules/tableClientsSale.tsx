@@ -9,8 +9,8 @@ import Loading from "./loading";
 import Cookies from 'js-cookie';
 
 interface Cliente {
-  client_id: number;
-  client_name: string;
+  id: number;
+  name: string;
   total_purchases: number;
 }
 
@@ -91,15 +91,15 @@ const TabelaClientes: React.FC = () => {
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>Valor de Compras</th>
+                <th>Total de Compras</th>
             </tr>
             </thead>
             <tbody>
             {clientesOrdenados.map((cliente) => (
-                <tr key={cliente.client_id}>
-                <td>{cliente.client_id}</td>
-                <td>{cliente.client_name}</td>
-                <td>R$ {cliente.total_purchases}</td>
+                <tr key={cliente.id}>
+                <td>{cliente.id}</td>
+                <td>{cliente.name}</td>
+                <td>{cliente.total_purchases}</td>
                 </tr>
             ))}
             </tbody>
