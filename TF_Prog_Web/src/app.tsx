@@ -12,6 +12,8 @@ import RegisterCategorie from './components/registerCategorie';
 import UpdateCategory from './components/updateCategory';
 import UpdateProduct from './components/updateProduct';
 import Dashboard from './components/dashboard';
+import ViewKits from './components/kits';
+import ViewCart from './components/cart';
 
 export function App() {
   
@@ -32,6 +34,8 @@ export function App() {
         <Route path='/registerCategorie' element={<RegisterCategorie/>} />
         <Route path='/updateCategory' element={<UpdateCategory/>} />
         <Route path='/updateProduct' element={<UpdateProduct/>} />
+        <Route path='/viewKits' element={<ViewKits/>} />
+        <Route path='/viewCart' element={<ViewCart/>} />
       </Routes>
     </Router>
   );

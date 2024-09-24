@@ -33,6 +33,14 @@ function handleLogout(navigate: ReturnType<typeof useNavigate>) {
     navigate('/login');
 }
 
+function handleSeeKits(navigate: ReturnType<typeof useNavigate>) {
+    navigate('/viewKits');
+}
+
+function handleNavigationCart(navigate: ReturnType<typeof useNavigate>) {
+    navigate('/viewCart');
+}
+
 const Header = () => {
     const navigate = useNavigate();
     const [menu, setMenu] = useState<boolean>(false);
@@ -63,7 +71,7 @@ const Header = () => {
             </div>
             <div class="navHeader">
                 <div class="navFirst">
-                    {admin && (
+                    {(
                         <button type="button" id="btnLateral" style="margin-left:15px; background: transparent; color: var(--main-blue)" onClick={()=>{
                             if(menu == false){
                             document.getElementsByClassName("navButtons")[0].setAttribute("style", "left:-150px");
@@ -90,7 +98,7 @@ const Header = () => {
                         logged ? <a onClick={()=> handleLogout(navigate)}><FontAwesomeIcon icon={faSignOut} size="2x"></FontAwesomeIcon></a> : <a onClick={()=> handleNavigationLogin(navigate)}><FontAwesomeIcon icon={faSignIn} size="2x"></FontAwesomeIcon></a>
                     }
                     {
-                        !admin && logged ? <a onClick={()=> handleNavigationMain(navigate)}><FontAwesomeIcon icon={faCartShopping} size="2x"></FontAwesomeIcon></a> : null
+                        !admin && logged ? <a onClick={()=> handleNavigationCart(navigate)}><FontAwesomeIcon icon={faCartShopping} size="2x"></FontAwesomeIcon></a> : null
                     }
                 </div>
             </div>
@@ -102,6 +110,13 @@ const Header = () => {
                 <div id="buttonSeeCateogires" onClick={() => handleSeeCategorie(navigate)}><i></i><span>Ver categorias</span></div>
             </div>
         )}
+        {
+            !admin && (
+                <div class="navButtons">
+                    <div id="buttonSeeKits" onClick={()=> handleSeeKits(navigate)}><i></i><span>Ver kits</span></div>
+                </div>
+            )
+        }
     </>
     )
   };
