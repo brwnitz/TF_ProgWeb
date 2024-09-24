@@ -40,6 +40,7 @@ const RegisterProduct = () => {
             stock: target[4].value,
             moreInfors: target[5].value,
             ingredients: "0",
+            images: []
         }
 
         try{
