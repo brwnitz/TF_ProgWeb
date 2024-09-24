@@ -69,7 +69,7 @@ const UpdateProduct = () => {
             try{
                 const response = await axios.put("http://localhost:3001/updateProduct", product, { headers: { 'x-access-token': Cookies.get('token') } });
                 if(response.data.type == "S"){
-                    alert("Produto cadastrado com sucesso!");
+                    alert("Produto atualizado com sucesso!");
                     handleSucces(navigate);
                 }else{
                     alert("Error: " + response.data.message);

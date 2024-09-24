@@ -62,44 +62,16 @@ const SalesDao = {
         }
     },
 
-    async selectTotalValuePerDay(startDate, endDate) {
-        try {
-            var connection = await connectionDB.openConnectionDB();
-            const result = await connection.promise().execute(
-                `SELECT DATE(date_time) AS sale_date, SUM(valueTotal) AS total_value_received 
-                 FROM sales 
-                 WHERE date_time BETWEEN ? AND ? 
-                 GROUP BY DATE(date_time) 
-                 ORDER BY sale_date ASC`,
-                [startDate, endDate]
-            );
-            await connection.end();
-
-            if (result != null) {
-                console.log("Sucesso na seleção!");
-                return ({ result: true, message: "Sucesso na seleção!", data: result[0] });
-            } else {
-                console.log("Erro na seleção!");
-                return ({ result: false, message: "Erro na seleção!", data: [] });
-            }
-        } catch (error) {
-            console.log(error);
-            return ({ result: false, message: error, data: [] });
-        }
-    },
+    
 
     async selectTotalPurchasesPerClient(startDate, endDate) {
         try {
             var connection = await connectionDB.openConnectionDB();
             const result = await connection.promise().execute(
-                `SELECT users.id AS client_id, users.name AS client_name, COUNT(sales.id) AS total_purchases 
-                 FROM sales 
-                 JOIN users ON sales.id_user = users.id 
-                 WHERE sales.date_time BETWEEN ? AND ? 
-                 GROUP BY users.id, users.name 
-                 ORDER BY total_purchases DESC`,
-                [startDate, endDate]
+                'SELECT users.id, users.name, COUNT(sales.id) AS total_purchases FROM sales JOIN users ON sales.id_user = users.id WHERE sales.date_time BETWEEN '+startDate+ ' AND '+ endDate+' GROUP BY users.id, users.name ORDER BY total_purchases DESC'
+                
             );
+            console.log(result);
             await connection.end();
 
             if (result != null) {

@@ -9,6 +9,8 @@ import axios from "axios";
 import Header from "../modules/header";
 import Footer from "../modules/footer";
 import MetricsChart from "../modules/metrics";
+import ProductModal from "../modules/productsStoke";
+import TabelaClientes from "../modules/tableClientsSale";
 
 
 const Dashboard = () => {
@@ -128,6 +130,8 @@ const Dashboard = () => {
         <body>
             <div class="containerDiv">
                 <MetricsChart/>
+                <ProductModal/>
+                <TabelaClientes/>
             </div>
             
          </body>

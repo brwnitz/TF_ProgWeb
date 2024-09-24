@@ -163,12 +163,14 @@ const SalesController = {
                 let userToken = new UserModel(req.decoded);
                 if(userToken.adm == true){
                     if(Utils.notEmpty(req.query.init_date) && Utils.notEmpty(req.query.final_date)){
-                        let report = await SalesDAO.selectTotalValuePerDay(req.query.init_date, req.query.final_date);
+                        let report = await SalesDAO.selectAllSales();
+                        console.log(report);
                         if(report.result){
+                            var data = SalesController.filtrarEVendasPorData(report.data, req.query.init_date,req.query.final_date); 
                             res.status(200).json({
                                 'type': "S",                            
                                 'message': 'Sucesso ao selecionar relatório',
-                                'data': report.data
+                                'data': data
                             });
                         }else{
                             res.status(500).json({
@@ -203,13 +205,50 @@ const SalesController = {
         }
     },
 
+    filtrarEVendasPorData(vendas, dataInicio, dataFim) {
+
+        //por motivos de: o beetwen não funcionava 
+        // Converte strings de data em objetos Date para comparação
+        const inicio = new Date(dataInicio);
+        const fim = new Date(dataFim);
+      
+        // Objeto para armazenar o total de vendas agrupadas por data
+        const vendasPorData = {};
+      
+        // Filtra e agrupa as vendas dentro do intervalo de datas
+        vendas.forEach(venda => {
+          const dataVenda = new Date(venda.date_time);
+      
+          // Verifica se a venda está no intervalo de datas
+          if (dataVenda >= inicio && dataVenda <= fim) {
+            // Se a data já existir no objeto, soma o valor; senão, inicializa com o valor
+            if (vendasPorData[venda.date_time]) {
+              vendasPorData[venda.date_time] += venda.valueTotal;
+            } else {
+              vendasPorData[venda.date_time] = venda.valueTotal;
+            }
+          }
+        });
+      
+        // Converte o objeto vendasPorData para um array de objetos [{dateSale, valorTotal}]
+        const resultado = Object.entries(vendasPorData).map(([date_time, valueTotal]) => ({
+          date_time,
+          valueTotal
+        }));
+      
+        return resultado;
+      },
+
     async selectReportTotalPurchasesPerClient(req, res){
         try{
             if(req.query != [] && req.query != undefined ){
                 let userToken = new UserModel(req.decoded);
                 if(userToken.adm == true){
                     if(Utils.notEmpty(req.query.init_date) && Utils.notEmpty(req.query.final_date)){
+                        console.log(req.query.init_date);
+                        console.log(req.query.final_date);
                         let report = await SalesDAO.selectTotalPurchasesPerClient(req.query.init_date, req.query.final_date);
+                        console.log(report);
                         if(report.result){
                             res.status(200).json({
                                 'type': "S",                            

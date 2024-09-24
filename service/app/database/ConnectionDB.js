@@ -19,12 +19,12 @@ const connectionDB = {
         useExecute ? {
           host: "localhost",
           user: "root",
-          password: "123456",
+          password: "root",
           database: bdName 
         }: {
           host: "localhost",
           user: "root",
-          password: "123456"
+          password: "root"
         }
       );
   
@@ -94,7 +94,7 @@ const connectionDB = {
         const createSaleTableQuery = `
           CREATE TABLE IF NOT EXISTS sales (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            date_time TIMESTAMP NOT NULL,
+            date_time VARCHAR(30) NOT NULL,
             codeSale VARCHAR(40) NOT NULL,
             valueTotal DOUBLE NOT NULL,
             id_user INT NOT NULL,

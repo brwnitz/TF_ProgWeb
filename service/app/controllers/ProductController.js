@@ -425,11 +425,14 @@ const ProductController = {
                 let userToken = new UserModel(req.decoded);
                 if(userToken.adm == true){
                         let report = await ProductDAO.selectOutOfStockProducts();
+                        
                         if(report.result){
+                            console.log(report.data);
+                            resultProducts = await ProductController.getImagesProduct(report.data);
                             res.status(200).json({
                                 'type': "S",                            
                                 'message': 'Sucesso ao selecionar relatório',
-                                'data': report
+                                'data': resultProducts
                             });
                         }else{
                             res.status(500).json({

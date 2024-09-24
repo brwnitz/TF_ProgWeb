@@ -6,6 +6,8 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Loading from './loading';
 import axios from 'axios';
 
+import Cookies from 'js-cookie';
+
 // Dados para o gráfico
 
 
@@ -17,21 +19,29 @@ const MetricsChart = () => {
   const [loading, setLoading] = useState(false);
   const [valueTotal, setValueTotal] = useState(0.0);
   const [dataMetrics, setDataMetrics] = useState<[]>([]);
+  const [fetchClientes, setFetchClientes] = useState(false);
 
 
-  const handleLoadMetrics = async (e: Event) => {
-        e.preventDefault();
-        const target: any = e.target;
-        setLoading(true);
-        setStartDate(target[0].value);
-        setEndDate(target[1].value);
+  const handleChangeEndDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    var element = event.currentTarget as HTMLInputElement;
+    setEndDate(element.value);
+  };
+
+  const handleChangeStartDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    var element = event.currentTarget as HTMLInputElement;
+    setStartDate(element.value);
+  };
+    const handleLoadMetrics = async () => {
+
         try{
-            const response = await axios.get("http://localhost:3001/reportSalesValueTotal?init_date="+startDate+"&&final_date="+endDate);
+            const token = Cookies.get('token');
+            const response = await axios.get("http://localhost:3001/reportSalesValueTotal?init_date="+startDate+"&&final_date="+endDate, {headers:{'x-access-token': token}});
             if(response.data.type == "S"){
+                console.log(response);
                 var valueTotal = 0.0;
                 if(response.data.data.length > 0){
                     for(var i = 0; i < response.data.data.length; i++){
-                        valueTotal += response.data.data[i].total_value_received;
+                        valueTotal += response.data.data[i].valueTotal;
                     }
                 }
                 setValueTotal(valueTotal);
@@ -44,9 +54,17 @@ const MetricsChart = () => {
             console.error(error);
         }
         finally{
+            setFetchClientes(false);
             setLoading(false);
         }
     }
+
+    useEffect(() => {
+        if (fetchClientes) {
+          handleLoadMetrics();
+        }
+      }, [fetchClientes, startDate, endDate]);
+    
 
   
 
@@ -56,9 +74,12 @@ const MetricsChart = () => {
             <h2 class="text-left">Métricas</h2>
             <div class="center">
                 <div class="modalRowDates">
-                    <input type="date" class="date-field mr-15" placeholder={"Data Inicial"} />
-                    <input type="date" class="date-field mr-15" placeholder={"Data final"} />
-                    <button type="submit" class="search-button">
+                    <input type="date" class="date-field mr-15" placeholder={"Data Inicial"} onChange={(event)=>{handleChangeStartDate(event)}} />
+                    <input type="date" class="date-field mr-15" placeholder={"Data final"} onChange={(event)=>{handleChangeEndDate(event)}}/>
+                    <button type="submit" onClick={(e: Event)=>{
+                        e.preventDefault();
+                        setFetchClientes(true);
+                    }} class="search-button">
                         <FontAwesomeIcon icon={faSearch} />
                     </button>
                 </div>
@@ -85,11 +106,11 @@ const MetricsChart = () => {
                     }}
                     >
                     
-                    <XAxis dataKey="name" />
+                    <XAxis dataKey="date_time" />
                     <YAxis />
                     {dataMetrics.length > 0 ? <Tooltip /> : <></>}
                     <Legend />
-                    {dataMetrics.length > 0 ? <Bar dataKey="value" fill="#ff0084" barSize={30} /> : <></>}
+                    {dataMetrics.length > 0 ? <Bar dataKey="valueTotal" fill="#ff0084" barSize={30} /> : <></>}
                     </BarChart>
                 </ResponsiveContainer>
             </div>
