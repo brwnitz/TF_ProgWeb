@@ -119,8 +119,11 @@ const SalesController = {
     async selectAllSalesUser(req, res){
         try{
             if(req.query != [] && req.query != undefined ){
-                if(Utils.notEmpty(req.query.id_user)){
-                    let sales = await SalesDAO.selectAllSalesFromUsers({id_user: req.query.id_user});
+                console.log(req.query);
+                if(Utils.notEmpty(req.query.id)){
+                    let saleModel = new SaleModel({id_user: req.query.id});
+                    console.log(saleModel);
+                    let sales = await SalesDAO.selectAllSalesFromUsers(saleModel);
                     if(sales.result){
                         var resultSales = await SalesController.getSaleItems(sales.data);
                         res.status(200).json({

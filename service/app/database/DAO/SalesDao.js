@@ -45,6 +45,7 @@ const SalesDao = {
 
     async selectAllSalesFromUsers(saleModel) {
         try {
+            console.log(saleModel.id_user);
             var connection = await connectionDB.openConnectionDB();
             const result = await connection.promise().execute('SELECT * FROM sales WHERE id_user = ?', [saleModel.id_user]);
             await connection.end();
