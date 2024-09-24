@@ -15,6 +15,12 @@ function handleNavigationMain(navigator: ReturnType<typeof useNavigate>) {
     navigator('/');
 }
 
+function handleNavigationUser(navigator: ReturnType<typeof useNavigate>) {
+    navigator('/userInfo');
+}
+
+
+
 function handleSeeProduct(navigate: ReturnType<typeof useNavigate>) {
     navigate('/viewProducts');
 }
@@ -92,7 +98,13 @@ const Header = () => {
                         }}><FontAwesomeIcon icon={faBars} size="2x"></FontAwesomeIcon></button>
                     )}
                     <h1>Marmitex+</h1>
-                    <a onClick={()=>{handleNavigationMain}}>Página inicial</a>
+                    <a onClick={()=>{
+                        if(!admin){
+                            handleNavigationUser(navigate)
+                        }else{
+                            handleUserInfors(navigate)
+                        }
+                    }}>Página inicial</a>
                     <a >Kits</a>
                     <a >Menus</a>
                     <a >Ajuda</a>
@@ -123,7 +135,7 @@ const Header = () => {
         {
             !admin && (
                 <div class="navButtons">
-                    <div id="buttonSeeKits" onClick={()=> handleSeeKits(navigate)}><i></i><span>Ver kits</span></div>
+                    <div id="buttonSeeKits" onClick={()=> handleSeeKits(navigate)}><i></i><span>Ver produtos</span></div>
                     <div id="buttonSeeSales" onClick={()=> handleNavigationSales(navigate)}><i></i><span>Ver histórico</span></div>
                 </div>
             )

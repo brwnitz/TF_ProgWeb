@@ -34,18 +34,16 @@ const ViewProduct = () => {
 
 
 
-      const handleDeleteProduct = async (e: Event) => {
-        e.preventDefault();
+      const handleDeleteProduct = async (product:Product) => {
         setLoading(true);
     
         try {
             const token = Cookies.get('token');
             console.log(token);
-            const response = await axios.delete("http://localhost:3001/deleteProduct", { headers: { 'x-access-token': token } });
+            const response = await axios.delete(`http://localhost:3001/deleteProduct?id=${product.id}`, { headers: { 'x-access-token': token } });
     
             if (response.data.type == "S") {
-                alert("Usuário deletado com sucesso!");
-                handleLogout(navigate);
+                alert("Produto deletado com sucesso!");
             } else {
                 alert("Error: " + response.data.message);
             }
@@ -106,6 +104,7 @@ const ViewProduct = () => {
                             <img src={product.images.length > 0 ? urlBase+product.images[0].link : ""} alt="Imagem" />
                             <p class="nameProduct">{product.name}</p>
                             <span class="descImage">{product.description}</span>
+                            <button class="buttonDelete" onClick={()=>handleDeleteProduct(product)}>Deletar</button>
                         </div>
                     ))}
                 </div>
